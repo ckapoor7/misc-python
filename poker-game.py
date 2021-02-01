@@ -1,4 +1,6 @@
 """
+Created on Fri Jan 29 15:31:24 2021
+
 @author: chaitanya
 """
 import random
@@ -9,6 +11,17 @@ def deal(numhands, n=5, deck=mydeck):
     """Shuffle the deck and deal out numhands n-card hands """
     random.shuffle(deck)
     return [deck[n*i:n*(i+1)] for i in range (numhands)]
+
+def palgo(deck):
+    """Knuth's algorithm 'P' """
+    N = len(deck)
+    for i in range(N-1): #Avoid redundancy here, although N would work just fine...
+        swap(deck, i, random.randrange(i,N))
+
+def swap(deck, i, j):
+    """Swap the ith and jth element of a collection """
+    print ('swap',i,j)
+    deck[i], deck [j] = deck[j], deck[i]
 
 def hand_percentages(n = 700*1000):
     """ Sample n random hands and print a table of percentages
@@ -105,7 +118,20 @@ def kind(n, ranks):
         if (freq[elem]==n):
             return elem
     return None"""
-    
+
+
+
+def hand_rank_refactored(hand):
+    """Returning a value indicating  """
+
+def group(items):
+    """Returns a list of [(count,x)...], highest count first,
+       then highest x first"""
+    groups = [(items.count(x),x) for x in set(items)]
+    return sorted(groups, reverse = True)
+
+def unzip (pairs):
+    return zip(*pairs)
 
 def test():
     """Test cases for the functions in poker program."""
