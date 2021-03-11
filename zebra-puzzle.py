@@ -2,7 +2,7 @@ import itertools
 import time
 
 
-def zebra_puzzle():
+def zebra_puzzle_optimized():
   """
   There are five houses.
 The Englishman lives in the red house.
@@ -20,31 +20,55 @@ The Lucky Strike smoker drinks orange juice.
 The Japanese smokes Parliaments.
 The Norwegian lives next to the blue house.
 """
-
-  houses = first, _, middle, _,_ =[1 ,2 ,3 ,4 ,5]
+  houses = first, _, middle, _, _ = [1,2,3,4,5]
   orderings = list(itertools.permutations(houses))
-  g = ((ZEBRA, WATER)
-    for red, green, ivory, yellow, blue in c(orderings)
-    for Englishman, Spaniard, Ukrainian, Norwegian, Japanese in c(orderings)
-    for dog, snails, fox, horse, ZEBRA in c(orderings)
-    for tea, coffee, milk,orange,WATER in c(orderings)
-    for OldGoldSmoker, Kools, Chesterfields,LuckyStrike,parliaments in c(orderings)
-    if red is Englishman
-    if dog is Spaniard
-    if coffee is green
-    if Ukrainian is tea
-    if is_right_of(green, ivory)
-    if OldGoldSmoker is snails
-    if Kools is yellow
-    if milk is middle
-    if Norwegian is first
-    if is_next_to(Chesterfields, fox)
-    if is_next_to(Kools, horse)
-    if LuckyStrike is orange
-    if Japanese is parliaments
-    if Norwegian is blue)
+  return next((WATER, ZEBRA)
+        for (red, green, ivory, yellow, blue) in c(orderings)
+        for (Englishman, Spaniard, Ukranian, Japanese, Norwegian) in c(orderings)
+        for (dog, snails, fox, horse, ZEBRA) in c(orderings)
+        for (coffee, tea, milk, oj, WATER) in c(orderings)
+        for (OldGold, Kools, Chesterfields, LuckyStrike, Parliaments) in c(orderings)
+        if Englishman is red
+        if Spaniard is dog
+        if coffee is green
+        if Ukranian is tea
+        if imright(green, ivory)
+        if OldGold is snails
+        if Kools is yellow
+        if milk is middle
+        if Norwegian is first
+        if nextto(Chesterfields, fox)
+        if nextto(Kools, horse)
+        if LuckyStrike is oj
+        if Japanese is Parliaments
+        if nextto(Norwegian, blue)
+  )
 
-  return next(g)
+def zebra_puzzle_normie():
+    houses = first, _, middle, _, _ = [1,2,3,4,5]
+    orderings = list(itertools.permutations(houses))
+    return next((WATER, ZEBRA)
+                for (red, green, ivory, yellow, blue) in c(orderings)
+                if imright(green, ivory)
+                for (Englishman, Spaniard, Ukranian, Japanese, Norwegian) in c(orderings)
+                if Englishman is red
+                if Norwegian is first
+                if nextto(Norwegian, blue)
+                for (coffee, tea, milk, oj, WATER) in c(orderings)
+                if coffee is green
+                if Ukranian is tea
+                if milk is middle
+                for (OldGold, Kools, Chesterfields, LuckyStrike, Parliaments) in c(orderings)
+                if Kools is yellow
+                if LuckyStrike is oj
+                if Japanese is Parliaments
+                for (dog, snails, fox, horse, ZEBRA) in c(orderings)
+                if Spaniard is dog
+                if OldGold is snails
+                if nextto(Chesterfields, fox)
+                if nextto(Kools, horse)
+                )
+
 
 
 def imright(h1, h2):
@@ -76,3 +100,26 @@ def timedcalls(n, fn, *args):
         while sum(times) < n:
             times.append(timedcall(fn, *args)[0])
     return min(times), average(times), max(times)
+
+def ints(start, end):
+    i = start
+    while (i <= end):
+        yield i #Create a generator function to yield numbers
+        i += 1
+
+def c(sequence):
+    c.starts += 1
+    for item in sequence:
+        c.items += 1
+        yield item  #Create a generator function to yield items from a sequence
+
+def instrument_fn (fn, *args):
+    c.starts, c.items = 0,0
+    result = fn(*args)
+    print('%s got %s with %5d iterations over %7d items' % (fn.__name__, result, c.starts, c.items))
+
+#Calculate number of iterations performed for the normal and optimized zebra puzzle function
+instrument_fn (zebra_puzzle_normie) #Normal function
+instrument_fn (zebra_puzzle_optimized) #Optimized solution
+
+    
