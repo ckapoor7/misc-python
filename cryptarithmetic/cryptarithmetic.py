@@ -24,6 +24,16 @@ def valid(f):
     except ArithmeticError:
         return False
 
+def compile_word(word):
+    """Compile a word of uppercase letters as numeric digits.
+    E.g., compile_word('YOU') => '(1*U+10*O+100*Y)'
+    Non-uppercase words unchanged: compile_word('+') => '+'"""
+    if word.isupper():
+        res = [('%s%s' %(10**i,d)) for (i,d) in enumerate(word[::-1])] #Using enumerate since it helps us keep a counter variable
+        return '(' + '+' + join(res) + ')'
+    else:
+        return word
+
 """A bunch of test cases, which some not-so-trivial
    ones (ie - hard to solve by hand)."""
 
