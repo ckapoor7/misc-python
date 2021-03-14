@@ -12,5 +12,5 @@ Next, it is possible to see the *execution statistics* of a program in great det
 ```time.process_time()``` (compatible with Python 3) instead of ```time.clock()``` which is a feature of Python 2. To check the execution statistics, we run
 the program from the command line with the following prompt\:
 ``` python3 -m cProfile xyz.py```\
-```xyz``` being the file name. This should result in a neat table like so\
+```xyz``` being the file name. This should result in a neat table like so:\
 ![Screenshot](https://github.com/ckapoor7/misc-python/blob/main/cryptarithmetic/Screen%20Shot%202021-03-14%20at%204.33.36%20PM.png)
