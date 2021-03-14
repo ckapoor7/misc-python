@@ -13,4 +13,4 @@ Next, it is possible to see the *execution statistics* of a program in great det
 the program from the command line with the following prompt\:
 ``` python3 -m cProfile xyz.py```\
 ```xyz``` being the file name. This should result in a neat table like so\
-![Screenshot](Screen Shot 2021-03-14 at 4.33.36 PM.png)
+![Screenshot](https://github.com/ckapoor7/misc-python/blob/main/cryptarithmetic/Screen%20Shot%202021-03-14%20at%204.33.36%20PM.png)
