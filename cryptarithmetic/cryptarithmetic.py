@@ -2,7 +2,9 @@ import string, re, itertools, time
 
 def solve(formula):
     """Given a formula like 'ODD + ODD == EVEN', fill in digits to solve it.
-    Input formula is a string; output is a digit-filled-in string or None."""
+    Input formula is a string; output is a digit-filled-in string or None.
+    Note that this returns only the 1st valid solution, though there might be 
+    multiple possibilities."""
     for elem in fill_in(formula):
         if valid(elem):
             return elem
@@ -21,6 +23,10 @@ def valid(f):
         return not re.search(r'\b0[0-9]', f) and eval(f) is True
     except ArithmeticError:
         return False
+
+"""A bunch of test cases, which some not-so-trivial
+   ones (ie - hard to solve by hand)."""
+
 
 examples = """YOU == ME**2
 TWO + TWO == FOUR
@@ -51,6 +57,6 @@ def test(func, example):
     for elem in example:
         print(); print(13*' ', elem)
         print('%6.4f sec: %s' % timedcall(func, elem))
-    print('%6.4f tot.' %(time.process_time()-t))
+    print('Total time: %6.4f' %(time.process_time()-t))
 
 test(solve, examples)    
