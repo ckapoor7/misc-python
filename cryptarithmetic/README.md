@@ -14,3 +14,4 @@ the program from the command line with the following prompt\:
 ``` python3 -m cProfile xyz.py```\
 ```xyz``` being the file name. This should result in a neat table like so:\
 ![Screenshot](https://github.com/ckapoor7/misc-python/blob/main/cryptarithmetic/Screen%20Shot%202021-03-14%20at%204.33.36%20PM.png)
+There are a lot more functions that are in the list which I was not able to capture in a single screenshot:)
