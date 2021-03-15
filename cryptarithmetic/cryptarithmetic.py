@@ -9,6 +9,36 @@ def solve(formula):
         if valid(elem):
             return elem
 
+def faster_solve(formula):
+    """"Given a formula like 'ODD + ODD == EVEN', fill in digits to solve it.
+    Input formula is a string; output is a digit-filled-in string or None.
+    This is a faster method since we perform only one eval per possibility."""
+    f, letters = compile_formula (formula, True)
+    for digits in itertools.permutations((0,1,2,3,4,5,6,7,8,9), len(letters)):
+        try:
+            if f(*digits) is True:
+                table = letters.maketrans(letters, ''.join(map(str,digits)))
+                formula.translate(table)
+        except ArithmeticError:
+            pass
+
+def compile_formula(formula, verbose = False):
+    """Compile formula into a function. Also return letters found, as a str,
+        in same order as params function. For example, 'YOU == ME**2'
+        :returns (lambda Y,M,E,U,O: (U+10*O+100*Y) == (E+10*M)**2), 'YMEUO' """
+    letters = ''.join(set(re.findall('[A-Z]', formula)))
+    firstletters = set(re.findall(r'\b[A-Z][A-Z]',formula)) #Find the 1st letter in a word
+    parms = ','.join(letters)
+    tokens = map(compile_word, re.split('([A-Z]+)', formula))
+    body = ''.join(tokens)
+    if firstletters:
+        test = ' and '.join(L+'!=0' for L in firstletters)
+        body = '%s and (%s)' %(test, body)
+    f = 'lambda %s: %s' %(parms,body)
+    if verbose: print(f)
+    return eval(f), letters
+        
+        
 def fill_in(formula):
     "Generate all possible fillings-in of letters in formula with digits."
     letters = ''.join(set(re.findall('[A-Z]', formula))) #Single occurence of all letters in formula
