@@ -22,19 +22,15 @@ def faster_solve(formula):
         except ArithmeticError:
             pass
 
-def compile_formula(formula, verbose = False):
+def compile_formula(formula, verbose=False):
     """Compile formula into a function. Also return letters found, as a str,
         in same order as params function. For example, 'YOU == ME**2'
         :returns (lambda Y,M,E,U,O: (U+10*O+100*Y) == (E+10*M)**2), 'YMEUO' """
     letters = ''.join(set(re.findall('[A-Z]', formula)))
-    firstletters = set(re.findall(r'\b[A-Z][A-Z]',formula)) #Find the 1st letter in a word
-    parms = ','.join(letters)
+    parms = ', '.join(letters)
     tokens = map(compile_word, re.split('([A-Z]+)', formula))
     body = ''.join(tokens)
-    if firstletters:
-        test = ' and '.join(L+'!=0' for L in firstletters)
-        body = '%s and (%s)' %(test, body)
-    f = 'lambda %s: %s' %(parms,body)
+    f = 'lambda %s: %s' % (parms, body)
     if verbose: print(f)
     return eval(f), letters
         
@@ -60,7 +56,7 @@ def compile_word(word):
     Non-uppercase words unchanged: compile_word('+') => '+'"""
     if word.isupper():
         res = [('%s%s' %(10**i,d)) for (i,d) in enumerate(word[::-1])] #Using enumerate since it helps us keep a counter variable
-        return '(' + '+' + join(res) + ')'
+        return '(' + '+' + ''.join(res) + ')'
     else:
         return word
 
@@ -99,4 +95,5 @@ def test(func, example):
         print('%6.4f sec: %s' % timedcall(func, elem))
     print('Total time: %6.4f' %(time.process_time()-t))
 
-test(solve, examples)    
+#test(solve, examples)
+test(faster_solve, examples)
