@@ -10,15 +10,15 @@ def solve(formula):
             return elem
 
 def faster_solve(formula):
-    """"Given a formula like 'ODD + ODD == EVEN', fill in digits to solve it.
+    """Given a formula like 'ODD + ODD == EVEN', fill in digits to solve it.
     Input formula is a string; output is a digit-filled-in string or None.
-    This is a faster method since we perform only one eval per possibility."""
-    f, letters = compile_formula (formula, True)
-    for digits in itertools.permutations((0,1,2,3,4,5,6,7,8,9), len(letters)):
+    This version precompiles the formula; only one eval per formula."""
+    f, letters = compile_formula(formula)
+    for digits in itertools.permutations((1,2,3,4,5,6,7,8,9,0), len(letters)):
         try:
             if f(*digits) is True:
-                table = letters.maketrans(letters, ''.join(map(str,digits)))
-                formula.translate(table)
+                table = letters.maketrans(letters, ''.join(map(str, digits)))
+                return formula.translate(table)
         except ArithmeticError:
             pass
 
@@ -27,9 +27,13 @@ def compile_formula(formula, verbose=False):
         in same order as params function. For example, 'YOU == ME**2'
         :returns (lambda Y,M,E,U,O: (U+10*O+100*Y) == (E+10*M)**2), 'YMEUO' """
     letters = ''.join(set(re.findall('[A-Z]', formula)))
+    first_letter = set(re.findall(r'\b([A-Z])[A-Z]', formula))
     parms = ', '.join(letters)
     tokens = map(compile_word, re.split('([A-Z]+)', formula))
     body = ''.join(tokens)
+    if first_letter:
+        test = ' and '.join(l + '!=0' for l in first_letter)
+        body = '%s and (%s)' %(test, body)
     f = 'lambda %s: %s' % (parms, body)
     if verbose: print(f)
     return eval(f), letters
@@ -53,10 +57,11 @@ def valid(f):
 def compile_word(word):
     """Compile a word of uppercase letters as numeric digits.
     E.g., compile_word('YOU') => '(1*U+10*O+100*Y)'
-    Non-uppercase words unchanged: compile_word('+') => '+'"""
+    Non-uppercase words uncahanged: compile_word('+') => '+'"""
     if word.isupper():
-        res = [('%s%s' %(10**i,d)) for (i,d) in enumerate(word[::-1])] #Using enumerate since it helps us keep a counter variable
-        return '(' + '+' + ''.join(res) + ')'
+        terms = [('%s*%s' % (10**i, d)) 
+                 for (i, d) in enumerate(word[::-1])]
+        return '(' + '+'.join(terms) + ')'
     else:
         return word
 
