@@ -7,11 +7,12 @@
 
 
 def search(pattern, text):
-    """Return true if pattern appears anywhere in text """
-    if pattern.startswith('^'):
-        return match(pattern[1:] ,text) #Match the remaining pattern
-    else:
-        return match('.*' + pattern ,text) #Match any character any number of times
+    """Match pattern anywhere in the text; return longest earliest match or None """
+    for i in range(len(text)):
+        m = match(pattern, text[i:])
+        if m is not None:
+            return m
+        
 
 def match(pattern, text):
     """Match patter against the start of the text and returns longest match else None"""
