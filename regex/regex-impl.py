@@ -100,6 +100,10 @@ def test():
                                   ('star', ('lit', 'c')))
     assert opt(('lit', 'x'))  == ('alt', ('lit', ''), ('lit', 'x'))
     assert oneof('abc')       == ('oneof', ('a', 'b', 'c'))
+    assert match(('star', ('lit', 'a')),'aaabcd') == 'aaa'
+    assert match(('alt', ('lit', 'b'), ('lit', 'c')), 'ab') == None
+    assert match(('alt', ('lit', 'b'), ('lit', 'a')), 'ab') == 'a'
+    assert search(('alt', ('lit', 'b'), ('lit', 'c')), 'ab') == 'b'
     
     return 'tests pass'
 
