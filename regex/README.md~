@@ -4,4 +4,4 @@ A demonstration of the same is below:
 dis.dis(lambda x,y : sqrt(x ** 2 + y ** 2))
 ```
 The purpose of the above code is pretty much self explanatory. The output that we get from this produces a somewhat interesting result:\
-![Screenshot](https://github.com/ckapoor7/misc-python/blob/main/regex/Screen%20Shot%202021-04-07%20at%209.09.13%20PM.png) 
+![Screenshot]() 
